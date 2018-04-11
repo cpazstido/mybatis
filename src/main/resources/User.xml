@@ -5,6 +5,13 @@
 
 <!-- mapper标签要指定namespace属性，不然会报错，可看做包名-->
 <mapper namespace="user">
+
+    <resultMap type="com.cf.model.User" id="accountResultMap">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="age" column="age"/>
+    </resultMap>
     <select id="findUserById" parameterType="int" resultType="com.cf.domain.User">
         select * from user where id = #{id}
     </select>
