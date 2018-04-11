@@ -20,6 +20,10 @@ public class App {
         useByDao();
     }
 
+    public void print(String txt){
+        System.out.println(txt);
+    }
+
     /**
      * 以dao的方式操作数据
      */

@@ -3,10 +3,35 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+    <properties></properties>
+
+    <settings>
+        <setting name="cacheEnabled" value="trues"/>
+    </settings>
+
     <typeAliases>
         <!--<package name="com.cf.domain"/>-->
         <typeAlias type="com.cf.domain.User" alias="User"></typeAlias>
     </typeAliases>
+
+    <typeHandlers>
+        <package name="com.cf" />
+    </typeHandlers>
+
+    <!--<plugins>-->
+        <!--<plugin interceptor="">-->
+            <!--<property name="" value="" />-->
+        <!--</plugin>-->
+    <!--</plugins>-->
+
+    <!--<objectFactory type="">-->
+        <!--<property name="" value="" />-->
+    <!--</objectFactory>-->
+
+    <!--<objectWrapperFactory type="">-->
+        <!--<property name="" value="" />-->
+    <!--</objectWrapperFactory>-->
+
 
     <environments default="development">
         <environment id="development">
@@ -19,6 +44,12 @@
             </dataSource>
         </environment>
     </environments>
+
+    <!--<databaseIdProvider type="">-->
+        <!--<property name="" value=""/>-->
+    <!--</databaseIdProvider>-->
+
+
 
     <mappers>
         <mapper resource="User.xml"/>
