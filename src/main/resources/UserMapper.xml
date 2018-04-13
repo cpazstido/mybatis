@@ -5,6 +5,14 @@
 
 <!-- mapper标签要指定namespace属性，不然会报错，且mapper开发时设置为Mapper接口的全限定名-->
 <mapper namespace="com.cf.dao.UserMapper">
+    <parameterMap id="pp" type="">
+        <parameter property="" javaType="" jdbcType="" mode="IN" />
+    </parameterMap>
+    <resultMap id="" type="">
+        <result jdbcType="" javaType="" property="" column=""></result>
+        <association property=""></association>
+        <collection property=""></collection>
+    </resultMap>
     <select id="findUserById" parameterType="int" resultType="com.cf.domain.User">
         select * from user where id = #{id}
     </select>

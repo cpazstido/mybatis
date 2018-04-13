@@ -1,11 +1,15 @@
 package com.cf;
 
+import com.cf.service.Calculator;
+import com.cf.service.Impl.CalculatorImpl;
+import com.cf.utils.CalculatorHandler;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Proxy;
 import java.net.URL;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.List;
 
 public class Test {
@@ -39,5 +43,17 @@ public class Test {
 
             }
         }
+    }
+
+    public void proxyTest(){
+        String a = new String("a");
+        a=null;
+        System.gc();
+        System.out.println(a);
+        CalculatorImpl calculatorImpl = new CalculatorImpl();
+        CalculatorHandler calculatorHandler = new CalculatorHandler(calculatorImpl);
+        Calculator calculator = (Calculator) Proxy.newProxyInstance(calculatorImpl.getClass().getClassLoader(),calculatorImpl.getClass().getInterfaces(),calculatorHandler);
+        System.out.println(calculator.add(1,2));
+        System.out.println(calculator.minus(1, 2));
     }
 }
