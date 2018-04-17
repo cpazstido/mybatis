@@ -14,9 +14,9 @@
         <typeAlias type="com.cf.domain.User" alias="User"></typeAlias>
     </typeAliases>
 
-    <typeHandlers>
-        <package name="com.cf" />
-    </typeHandlers>
+    <!--<typeHandlers>-->
+        <!--<package name="com.cf" />-->
+    <!--</typeHandlers>-->
 
     <!--<plugins>-->
         <!--<plugin interceptor="">-->
@@ -54,6 +54,6 @@
     <mappers>
         <mapper resource="User.xml"/>
         <mapper resource="UserMapper.xml" />
-        <package name="com.cf"/>
+        <!--<package name="com.cf"/>-->
     </mappers>
 </configuration>
