@@ -32,7 +32,7 @@ public class ChartServerInitializer extends ChannelInitializer<SocketChannel> {
          *  | ABC\nDEF |
          *  +----------+
          */
-        pipeline.addLast("delimiterBasedFrameDecoder", new DelimiterBasedFrameDecoder(4096, Delimiters.lineDelimiter()));
+//        pipeline.addLast("delimiterBasedFrameDecoder", new DelimiterBasedFrameDecoder(4096, Delimiters.lineDelimiter()));
         pipeline.addLast("stringDecoder", new StringDecoder(CharsetUtil.UTF_8));  //编码不指定，默认为utf-8
         pipeline.addLast("stringEncoder", new StringEncoder(CharsetUtil.UTF_8));
         pipeline.addLast(new ChartServerHandler());

@@ -13,13 +13,13 @@ public class ChartServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
         Channel channel = ctx.channel();
-        System.out.println(channelGroup.size());
-        channelGroup.writeAndFlush("hahah");
+        System.out.println(channel.remoteAddress()+":"+msg);
         channelGroup.forEach(c -> {
-            if(channel == c){  //如果自己
-                channel.writeAndFlush("【自己】: " + msg + "\n");
-            }else{ //发送给其他人的信息
-                c.writeAndFlush(channel.remoteAddress() + ": " + msg + "\n");
+            if (c == channel) {
+                c.writeAndFlush("[you]：" + msg);
+            } else {
+                c.writeAndFlush(
+                        "[" + channel.remoteAddress() + "]: " + msg + "\n");
             }
         });
     }
