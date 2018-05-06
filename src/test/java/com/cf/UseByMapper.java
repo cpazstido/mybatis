@@ -1,5 +1,7 @@
 package com.cf;
 
+import com.cf.dao.Impl.UserDaoImpl;
+import com.cf.dao.UserDao;
 import com.cf.dao.UserMapper;
 import com.cf.domain.User;
 import org.apache.ibatis.io.Resources;
@@ -10,10 +12,12 @@ import org.junit.Test;
 
 import java.io.InputStream;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CyclicBarrier;
 
 public class UseByMapper {
     @Test
-    public void findUserByID() throws Exception{
+    public void findUserByID() throws Exception {
         String resource = "SqlMapConfig.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(inputStream);
@@ -25,8 +29,9 @@ public class UseByMapper {
         //--------------
         session.close();
     }
+
     @Test
-    public void findAll() throws Exception{
+    public void findAll() throws Exception {
         String resource = "SqlMapConfig.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(inputStream);
@@ -40,8 +45,9 @@ public class UseByMapper {
         //----------------------
         session.close();
     }
+
     @Test
-    public void insertTest() throws Exception{
+    public void insertTest() throws Exception {
         String resource = "SqlMapConfig.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(inputStream);
@@ -58,8 +64,9 @@ public class UseByMapper {
         //----------------------
         session.close();
     }
+
     @Test
-    public void deleteUserById() throws Exception{
+    public void deleteUserById() throws Exception {
         String resource = "SqlMapConfig.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(inputStream);
@@ -71,8 +78,9 @@ public class UseByMapper {
         //----------------------
         session.close();
     }
+
     @Test
-    public void updateUserPassword() throws Exception{
+    public void updateUserPassword() throws Exception {
         String resource = "SqlMapConfig.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(inputStream);
@@ -87,5 +95,61 @@ public class UseByMapper {
         session.commit();
         //----------------------
         session.close();
+    }
+
+    @Test
+    public void testTransaction() {
+        UserDao userDao = new UserDaoImpl();
+        int num = 10;
+        CountDownLatch countDownLatch = new CountDownLatch(num);
+        CyclicBarrier cyclicBarrier = new CyclicBarrier(num);
+        for (int i = 0; i < num; i++) {
+            new Thread(new TestThread(countDownLatch, cyclicBarrier, i)).start();
+        }
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private class TestThread implements Runnable {
+        private CountDownLatch countDownLatch;
+        private CyclicBarrier cyclicBarrier;
+        private int i;
+
+        @Override
+        public void run() {
+            try {
+                System.out.println(i + "等待");
+                cyclicBarrier.await();
+                System.out.println(i + "开始执行");
+                String resource = "SqlMapConfig.xml";
+                InputStream inputStream = Resources.getResourceAsStream(resource);
+                SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(inputStream);
+                SqlSession session = factory.openSession(false);
+                UserMapper mapper = session.getMapper(UserMapper.class);
+                User user = mapper.findUserById(1);
+//                Random random = new Random(1000);
+//                int time = random.nextInt();
+//                if (time > 0) {
+////                    Thread.sleep(time);
+//                }
+                user.setAge(user.getAge() - 1);
+                mapper.updateAge(user);
+                session.commit();
+                session.close();
+                countDownLatch.countDown();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        public TestThread(CountDownLatch countDownLatch, CyclicBarrier cyclicBarrier, int i) {
+            this.countDownLatch = countDownLatch;
+            this.cyclicBarrier = cyclicBarrier;
+            this.i = i;
+        }
+
     }
 }

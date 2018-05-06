@@ -28,4 +28,9 @@
     <update id="updateUserPassword" parameterType="com.cf.domain.User">
         update user set password=#{password} where id=#{id}
     </update>
+
+    <update id="updateAge" parameterType="com.cf.domain.User">
+        update user set age=#{age} where id = 1
+    </update>
+
 </mapper>

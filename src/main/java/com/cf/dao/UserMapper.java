@@ -10,4 +10,5 @@ public interface UserMapper {
     public void insertUser(User user);
     public void deleteUserById(int id);
     public void updateUserPassword(User user);
+    int updateAge(User user);
 }
