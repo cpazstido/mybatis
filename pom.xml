@@ -78,6 +78,15 @@
             <version>4.1.6.Final</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.htmlparser/htmlparser -->
+        <dependency>
+            <groupId>org.htmlparser</groupId>
+            <artifactId>htmlparser</artifactId>
+            <version>1.6</version>
+        </dependency>
+
+
+
 
     </dependencies>
 
